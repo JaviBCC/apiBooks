@@ -9,7 +9,7 @@ router.get("/", usuarioCtrl.getStart);
 
 router.post("/registro", usuarioCtrl.postUsuario);
 
-router.post("/registro", usuarioCtrl.getUsuario);
+router.post("/login", usuarioCtrl.getUsuario);
 
 
 

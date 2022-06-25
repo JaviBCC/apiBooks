@@ -17,14 +17,14 @@ function getStart(request, response) {
 
 function postUsuario(request, response) 
 {
-
+    console.log("Entro en controller POST")
     console.log(request.body)
 
-    let sql = "INSERT INTO usuario (nombre, apellidos, correo, foto, password)" + 
+    let sql = "INSERT INTO usuario (nombre, apellidos, correo, url, password)" + 
               "VALUES ('" + request.body.nombre         + "', '" +
                             request.body.apellidos      + "', '" +
                             request.body.correo         + "', '" +
-                            request.body.foto           + "', '" +
+                            request.body.url            + "', '" +
                             request.body.password       + "')";
 
     console.log(sql);
@@ -51,30 +51,14 @@ function postUsuario(request, response)
 
 function getUsuario(request, response)
 {
-    let sql;
-
-    console.log("Aquí el params");
-    // console.log(request.params.id);
-
-    // if (request.params.id)
-    //     sql = "SELECT * FROM students WHERE student_id = " + request.params.id;
-
-    // else
-    //     sql = "SELECT * FROM students";
-
-
-    // sql = "SELECT nombre, apellidos, correo, foto FROM usuario WHERE correo = " + request.body.correo; 
-    
 
     console.log(request.body.correo);
+    console.log(request.body.password);
 
-
-
-    sql = "SELECT nombre, apellidos, correo, foto FROM usuario WHERE correo = " + request.body.correo;
+    let sql = `SELECT id_usuario, nombre, apellidos, correo, url FROM usuario WHERE correo = "${request.body.correo}" AND password = "${request.body.password}"`;
 
     
-
-    if (sql == "") {
+    if (sql == "" || sql == null) {
         console.log("LOS DATOS SON INCORRECTOS")
     }
     else 
@@ -96,7 +80,6 @@ function getUsuario(request, response)
         }
 
     }
-
 
 
 

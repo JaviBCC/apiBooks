@@ -6,15 +6,16 @@ class Libro {
     tipo;
     autor;
     precio;
-    foto;
+    url;
 
-    constructor(id_libro, id_usuario, titulo, tipo, autor, precio, foto) {
+    constructor(id_libro, id_usuario, titulo, tipo, autor, precio, url) {
             this.id_libro       = id_libro;
             this.id_usuario     = id_usuario;
             this.titulo         = titulo;
+            this.tipo           = tipo;
             this.autor          = autor;
             this.precio         = precio;
-            this.foto           = foto;
+            this.url            = url;
            
     }
 }
