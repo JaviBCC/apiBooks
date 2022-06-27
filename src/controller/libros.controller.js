@@ -23,10 +23,10 @@ function getLibros(request, response)
     console.log(request.params.id);
 
     if (request.params.id)
-        sql = "SELECT * FROM libro WHERE id_libro = " + request.params.id;
+        sql = "SELECT * FROM libro WHERE id_usuario = " + request.params.id;
 
-    else
-        sql = "SELECT * FROM libro";
+    // else
+    //     sql = "SELECT * FROM libro";
     
     connection.query(sql, function (err, result)
         {
@@ -41,6 +41,35 @@ function getLibros(request, response)
             }
         })
 }
+
+
+function getLibrosUsuario(request, response)
+{
+    let sql;
+
+    console.log("Aquí el params");
+    console.log(request.params.id);
+
+    if (request.params.id_libro && request.params.id_usuario)
+      
+
+        sql = `SELECT * FROM libro WHERE id_libro = "${request.params.id_libro}" AND id_usuario = "${request.params.id_usuario}";`
+    
+    connection.query(sql, function (err, result)
+        {
+            console.log(result)
+
+            if (err)
+                console.log(err);
+            else
+            {
+                console.log(result);
+                response.send(result);
+            }
+        })
+}
+
+
 
 
 function postLibros(request, response) 
@@ -157,6 +186,6 @@ function deleteLibros(request, response) {
 
 
 
-module.exports = {getStart, getLibros, postLibros, putLibros, deleteLibros};
+module.exports = {getStart, getLibros, getLibrosUsuario, postLibros, putLibros, deleteLibros};
 
 // module.exports = {getStart, getNotas, postNotas, putNotas, deleteNotas};
