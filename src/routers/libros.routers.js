@@ -9,9 +9,9 @@ router.get("/", librosCtrl.getStart);
 
 router.get("/libros/:id", librosCtrl.getLibros);
 
-router.get("/libros", librosCtrl.getLibros);
+// router.get("/libros", librosCtrl.getLibros);
 
-router.get("/libros/:id_libro/:id_usuario", librosCtrl.getLibrosUsuario);
+router.get("/libros/:id_libro/:id_usuario", librosCtrl.getLibros);
 
 router.post("/libros", librosCtrl.postLibros);
 

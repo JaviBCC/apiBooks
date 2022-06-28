@@ -15,47 +15,72 @@ function getStart(request, response) {
 
 
 
-function getLibros(request, response)
-{
-    let sql;
+// function getLibros(request, response)
+// {
+//     let sql;
 
-    console.log("Aquí el params");
-    console.log(request.params.id);
+//     console.log("Aquí el getLibros");
+//     console.log(request);
+//     console.log(request.params.id);
 
-    if (request.params.id)
-        sql = "SELECT * FROM libro WHERE id_usuario = " + request.params.id;
+//     if (request.params.id)
+//         sql = "SELECT * FROM libro WHERE id_usuario = " + request.params.id;
 
-    // else
-    //     sql = "SELECT * FROM libro";
+//     // else
+//     //     sql = "SELECT * FROM libro";
     
-    connection.query(sql, function (err, result)
-        {
-            console.log(result)
+//     connection.query(sql, function (err, result)
+//         {
+//             console.log(result)
 
-            if (err)
-                console.log(err);
-            else
-            {
-                console.log(result);
-                response.send(result);
-            }
-        })
-}
+//             if (err)
+//                 console.log(err);
+//             else
+//             {
+//                 console.log(result);
+//                 response.send(result);
+//             }
+//         })
+// }
 
 
-function getLibrosUsuario(request, response)
-{
-    let sql;
+// function getLibrosUsuario(request, response)
+// {
+//     let sql;
 
-    console.log("Aquí el params");
-    console.log(request.params.id);
+//     console.log("Aquí el getLibrosUsuario");
+//     console.log(request.params.id);
 
-    if (request.params.id_libro && request.params.id_usuario)
+//     if (request.params.id_libro && request.params.id_usuario)
       
 
-        sql = `SELECT * FROM libro WHERE id_libro = "${request.params.id_libro}" AND id_usuario = "${request.params.id_usuario}";`
+//         sql = `SELECT * FROM libro WHERE id_libro = "${request.params.id_libro}" AND id_usuario = "${request.params.id_usuario}";`
     
-    connection.query(sql, function (err, result)
+//     connection.query(sql, function (err, result)
+//         {
+//             console.log(result)
+
+//             if (err)
+//                 console.log(err);
+//             else
+//             {
+//                 console.log(result);
+//                 response.send(result);
+//             }
+//         })
+// }
+
+function getLibros(request, response) {
+
+    let sql;
+
+    console.log(request.query.id_libro + "GET CONTROLLER")
+
+    if(request.query.id_usuario && request.query.id_libro) {
+
+        sql = "SELECT * FROM libro WHERE id_libro = " + request.query.id_libro + " AND id_usuario=" + request.query.id_usuario
+
+        connection.query(sql, function (err, result)
         {
             console.log(result)
 
@@ -64,10 +89,39 @@ function getLibrosUsuario(request, response)
             else
             {
                 console.log(result);
-                response.send(result);
+
+                if(result.insertId)
+                    response.send(String (result.insertId));
+                else
+                    response.send(result)
+
             }
         })
-}
+
+        } else {
+
+            console.log(request.query.id_usuario + "GET CONTROLLER")
+
+            sql = "SELECT * FROM libro WHERE id_usuario = " + request.query.id
+
+            connection.query(sql, function (err, result) {
+
+                if(err) {
+                    console.log(err);
+                } else {
+                    console.log(result);
+                     
+                    if(result.insertId)
+                        response.send(String (result.insertId));
+                    else
+                        response.send(result)
+                }
+
+            })
+
+        }
+
+    }
 
 
 
@@ -77,8 +131,9 @@ function postLibros(request, response)
 
     console.log(request.body)
 
-    let sql = "INSERT INTO libro (id_usuario, titulo, tipo, autor, precio, url)" + 
-              "VALUES ('" + request.body.id_usuario  + "', '" +
+    let sql = "INSERT INTO libro (id_libro, id_usuario, titulo, tipo, autor, precio, url)" + 
+              "VALUES ('" + request.body.id_libro    + "', '" +
+                            request.body.id_usuario  + "', '" +         
                             request.body.titulo      + "', '" +
                             request.body.tipo        + "', '" +
                             request.body.autor       + "', '" +
@@ -129,9 +184,9 @@ function putLibros(request, response ) {
                                                  "  tipo        = COALESCE(?, tipo),        " +
                                                  "  autor       = COALESCE(?, autor),       " +
                                                  "  precio      = COALESCE(?, precio),      " +    
-                                                 "  url         = COALESCE(?, url)   WHERE id_libro = " + request.query.id; 
+                                                 "  url         = COALESCE(?, url)   WHERE id_libro = COALESCE(?, id_usuario)"; 
+                                                //  "  url         = COALESCE(?, url)   WHERE id_libro = " + request.query.id; 
                                       
-
 
         console.log(updateLibro);
         console.log("paso por aqui")
@@ -186,6 +241,6 @@ function deleteLibros(request, response) {
 
 
 
-module.exports = {getStart, getLibros, getLibrosUsuario, postLibros, putLibros, deleteLibros};
+module.exports = {getStart, getLibros, postLibros, putLibros, deleteLibros};
 
-// module.exports = {getStart, getNotas, postNotas, putNotas, deleteNotas};
+// module.exports = {getStart, getLibros, getLibrosUsuario, postLibros, putLibros, deleteLibros};
