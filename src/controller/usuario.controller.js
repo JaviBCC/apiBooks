@@ -1,4 +1,5 @@
 
+const { response } = require("express");
 let {Usuario}    = require("../models/classUsuario");
 const connection = require("../database")
 
@@ -49,56 +50,68 @@ function postUsuario(request, response)
 
 
 
-function getUsuario(request, response)
-{
+function getUsuario(request, response) {
 
-    console.log("ESTOY ENTRANDO DESDE LA PRUEBA DEL SERVICIO")
-    console.log("USUARIO: " + request)
+    let res = {};
+    let param = [request.body.correo,request.body.password]
 
-    // console.log(request.body.correo);
-    // console.log(request.body.password);
+    let sql = "SELECT * FROM usuario WHERE correo =?  AND password =?"
 
-    let sql = `SELECT id_usuario, nombre, apellidos, correo, url FROM usuario WHERE correo = "${request.body.correo}" AND password = "${request.body.password}"`;
+    connection.query(sql,param, function (err, result) {
 
-    console.log(request.body.correo)
+        if (err)
+            console.log(err);
+        else {
+            if(result.length > 0){
+                res = {error:false, message:"La contraseña y el correo SI coinciden ", result:result}      
+               
+            }else{
+                res = {error: true, message: "La contraseña y el correo NO coinciden ", result:result}         
+            }
+            } response.send(res);
+        }
+    )}
 
-    if (sql == "" || sql == null || sql == [])  {
 
-        console.log("LOS DATOS SON INCORRECTOS")
-    }
-    else 
-    {
+    // if (sql == "" || sql == null || sql == [])  {
+
+    //     console.log("LOS DATOS SON INCORRECTOS")
+    // }
+    // else 
+    // {
     
-        connection.query(sql, function (err, result)
-            {
-                console.log(result)
+    //     connection.query(sql, function (err, result)
+    //         {
+    //             console.log(result)
+    //             let res;
 
-                if (err)
-                    console.log(err);
-                else
-                {
-                    if (result.length == 0) {
+    //             if (err)
+    //                 console.log(err);
+    //             else
+    //             {
+    //                 if (result.length == 0) {
 
-                        let array = [{error: true, message: "El correo y la contraseña no coinciden ", result:result}]
-                        console.log("El correo y la contraseña no coinciden " + JSON.stringify(result))
-                        response.send(array);
+    //                     // let array = [{error: true, message: "El correo y la contraseña no coinciden ", result:result}]
+    //                     console.log("El correo y la contraseña no coinciden " + JSON.stringify(result))
+    //                     //  response.send(array);
+    //                     res = {error: true, message: "El correo y la contraseña no coinciden ", result:result}
 
-                    }else {
+    //                 }else {
 
-                        let array = [{error:false, message: "El correo y la contraseña coinciden ", result:result}]
-                        console.log("El correo y las contraseña coinciden " + JSON.stringify(result))
-                        response.send(array);
-                    }
+    //                     console.log("El correo y las contraseña coinciden " + JSON.stringify(result))
+    //                     res = {error:false, message: "El correo y la contraseña coinciden ", result:result}
+    //                 }
             
 
-                    console.log("HE ENCONTRADO EL USUARIO")
-                    console.log(result);
-                    response.send(result);
-                }
-            })
-        }
+    //                 console.log("HE ENCONTRADO EL USUARIO")
+    //                 console.log(result);
+    //                 console.log(res)
+    //                 response.send(res);
+    //             }
+    //         })
+    //     }
 
-    }
+    // }
 
 
 module.exports = {getStart, postUsuario, getUsuario}

@@ -102,7 +102,7 @@ function getLibros(request, response) {
 
             console.log(request.query.id_usuario + "GET CONTROLLER")
 
-            sql = "SELECT * FROM libro WHERE id_usuario = " + request.query.id
+            sql = "SELECT * FROM libro WHERE id_usuario = " + request.query.id_usuario
 
             connection.query(sql, function (err, result) {
 
@@ -217,11 +217,11 @@ function putLibros(request, response ) {
 
 function deleteLibros(request, response) {
 
-    let id = request.body.id;
+    let id = request.query.id_libro;
 
           if (request.query.id != "") {
 
-            let delLibro = "DELETE FROM libro WHERE id_libro=" + request.query.id;
+            let delLibro = "DELETE FROM libro WHERE id_libro=" + request.query.id_libro;
 
 
         connection.query(delLibro, function(err, result)
